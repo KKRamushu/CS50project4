@@ -1,0 +1,108 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>{% block title %}Social Network{% endblock %}</title>
+        <!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"> -->
+        <link href="{% static 'network/styles.css' %}" rel="stylesheet">
+    </head>
+    <body>
+<!--Navigation panel-->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#">Network</a>
+          
+            <div class="user-nav-bar">
+              <ul class="navbar-nav mr-auto">
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><strong>{{ user.username }}</strong></a>
+                    </li>
+                {% endif %}
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'index' %}">All Posts</a>
+                </li>
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Following</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'login' %}">Log In</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'register' %}">Register</a>
+                    </li>
+                {% endif %}
+              </ul>
+            </div>
+        </nav>
+<!--News feed-->
+        <div class="feed-container">
+            <div class="feeds-heading">
+                <h3 class="feeds-title">News Feeds</h3>
+            </div>
+            <div class="post-container">
+                <div class="post-header">
+                    <div class="poster-container">
+                        <div class="poster-img"></div>
+                        <div class="poster-name"><h5>UserName</h5></div>
+                    </div>
+                    <div class="post-time"><small>11:22</small></div>
+                </div>
+
+                <div class="post-body">
+                    <p class="post-content">today is a lovely day, is'nt it?</p>
+                </div>
+                <div class="post-footer">
+                    <div class="likes">like</div>
+                    <div class="comment">comment</div>
+                    <div class="share">share</div>
+                    <div class="edit">edit</div>
+                </div>
+            </div>
+            <div class="post-container">
+                <div class="post-header">
+                    <div class="poster-container">
+                        <div class="poster-img"></div>
+                        <div class="poster-name"><h5>UserName</h5></div>
+                    </div>
+                    <div class="post-time"><small>11:22</small></div>
+                </div>
+
+                <div class="post-body">
+                    <p class="post-content">today is a lovely day, is'nt it?</p>
+                </div>
+                <div class="post-footer">
+                    <div class="likes buttons">like</div>
+                    <div class="comment buttons">comment</div>
+                    <div class="share buttons">share</div>
+                    <div class="edit buttons">edit</div>
+                </div>
+            </div>
+
+        </div>
+<!--User panel-->
+        <div class="user-panel">
+            <div class="user-container">
+                <div class="user-img-name-container">
+                    <div class="user-img"></div>
+                    <div class="user-name">username</div>
+                </div>
+                <div class="user-actions">
+                    <a class="action nav-item" href="">Post</a>
+                    <a class="action nav-item" href="{% url 'logout' %}">Log Out</a>
+                    <a href="" class="action nav-item">Profile</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="body">
+            {% block body %}
+            {% endblock %}
+        </div>
+    </body>
+</html>
