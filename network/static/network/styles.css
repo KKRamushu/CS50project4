@@ -6,6 +6,11 @@
   --box-shadow-hover: 0 -2px 10px -1px rgba(221, 107, 0, 0.4);
   --background-color: rgb(10, 10, 10);
   --background-color-lite: rgb(15, 15, 15);
+  --background-color-selected: rgb(24, 24, 24); 
+}
+
+html{
+  overflow-y: auto;
 }
 
 body{
@@ -13,13 +18,30 @@ body{
   color: var(--text-color);
 }
 
+/*scroll bar*/
+
+::-webkit-scrollbar{
+  width: 10px;
+}
+::-webkit-scrollbar-track{
+  background-color: var(--background-color);
+}
+::-webkit-scrollbar-thumb{
+  background-color: var(--background-color-lite);
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover{
+  box-shadow: var(--box-shadow-hover);
+  background-color: var(--background-color-selected);
+}
+/*nav-bar*/
 .nav-link, .navbar-brand{
   color: var(--text-color);
   text-decoration: none;
 }
 
 .navbar{
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   height: 640px;
@@ -77,12 +99,13 @@ body{
 
 /*news feeds*/
 
-.feed-container{
+.feed-container, .login-container, .register-container{
   position: absolute;
   top: 0;
   left: 302px;
   height: 638px;
   width: 710px;
+  padding-bottom: 50px;
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -96,11 +119,12 @@ body{
   justify-content: center;
 }
 
-.post-container{
+.post-container, .login-form, .register-form{
   position: relative;
   width: 695px;
   height: auto;
   margin-top: 5px;
+  margin-bottom: 5px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -185,7 +209,7 @@ body{
   position: fixed;
   top: 0px;
   right: 0;
-  width: 350px;
+  width: 340px;
   height: 640px;
   display: flex;
   align-items: center;
@@ -251,4 +275,31 @@ body{
   box-shadow: var(--box-shadow-hover);
   color: rgb(221, 107, 0);
   text-decoration: none;
+}
+
+/*login*/
+
+.form-control{
+  width: 100%;
+  margin: 5px;
+  text-align: center;
+  background-color: var(--background-color-lite);
+  border: 0;
+  color: var(--text-color);
+  border-bottom: var(--border-color);
+}
+.form-control:focus{
+  background-color: var(--background-color-selected);
+  border: var(--border-color);
+  box-shadow: var(--box-shadow);
+}
+
+.btn-primary{
+  width: 50%;
+  height: 45px;
+  margin-bottom: 5px;
+  background-color: var(--background-color-lite);
+  box-shadow: var(--box-shadow);
+  border: 0;
+  border-bottom: var(--border-color);
 }
