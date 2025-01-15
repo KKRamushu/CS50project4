@@ -14,11 +14,6 @@
           
             <div class="user-nav-bar">
               <ul class="navbar-nav mr-auto">
-                {% if user.is_authenticated %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="#"><strong>{{ user.username }}</strong></a>
-                    </li>
-                {% endif %}
                 <li class="nav-item">
                   <a class="nav-link" href="{% url 'index' %}">All Posts</a>
                 </li>
@@ -27,14 +22,7 @@
                         <a class="nav-link" href="#">Following</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
-                    </li>
-                {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'login' %}">Log In</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'register' %}">Register</a>
+                        <a class="nav-link" href="#">My posts</a>
                     </li>
                 {% endif %}
               </ul>
@@ -44,14 +32,21 @@
 <!--User panel-->
         <div class="user-panel">
             <div class="user-container">
-                <div class="user-img-name-container">
-                    <div class="user-img"></div>
-                    <div class="user-name">username</div>
-                </div>
+                {% if user.is_authenticated %}
+                    <div class="user-img-name-container">
+                        <div class="user-img"></div>
+                            <div class="user-name"><strong>{{ user.username }}</strong></div>   
+                    </div>
+                {% endif %}
                 <div class="user-actions">
-                    <a class="action nav-item" href="">Post</a>
-                    <a class="action nav-item" href="{% url 'logout' %}">Log Out</a>
-                    <a href="" class="action nav-item">Profile</a>
+                    {% if user.is_authenticated %}
+                        <a class="action nav-item" href="">Post</a>
+                        <a href="" class="action nav-item">Profile</a>
+                        <a class="action nav-item" href="{% url 'logout' %}">Log Out</a>
+                    {% else %}
+                    <a class="action nav-item" href="{% url 'login' %}">Log In</a>
+                    <a class="action nav-item" href="{% url 'register' %}">Register</a>
+                    {% endif %}
                 </div>
             </div>
         </div>

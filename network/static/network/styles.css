@@ -106,17 +106,23 @@ body{
   height: 638px;
   width: 710px;
   padding-bottom: 50px;
+  padding-top: 50px;
   display: flex;
   align-items: center;
   flex-direction: column;
 }
 .feeds-heading{
-  position: relative;
-  width: 100%;
+  position: fixed;
+  top: 0px;
+  left: 302px;
+  width: 710px;
   height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: var(--background-color-lite);
+  box-shadow:  0 5px 8px -1px rgba(87, 87, 86, 0.4);
+  z-index: 1;
 }
 
 .post-container, .login-form, .register-form{
