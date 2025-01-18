@@ -2,8 +2,6 @@
 
 {% block body %}
 
-    <h2>Register</h2>
-
     {% if message %}
         <div>{{ message }}</div>
     {% endif %}
@@ -28,8 +26,10 @@
             </div>
             <input class="btn btn-primary action" type="submit" value="Register">
         </form>
+
+        Already have an account? <a class="action nav-item" href="{% url 'login' %}">Log In here.</a>
+
     </div>
 
-    Already have an account? <a href="{% url 'login' %}">Log In here.</a>
-
+    
 {% endblock %}

@@ -1,0 +1,30 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+
+<div class="profile-container">
+  <div class="feeds-heading">
+    <h3 class="feeds-title login-title">Profile</h3>
+  </div>
+  <div class="user-info">
+    <div class="personal">
+      <div class="user-img"></div>
+      <div class="user-name"><strong>{{ user.username }}</strong></div>   
+    </div>
+
+    <div class="acc-details">
+      <div class="f0llowers-div">
+        <h4>Follower</h4>
+      </div>
+      <div class="following-div">
+        <h4>Following</h4>
+      </div>
+      <div class="follow">
+        <a href="" class="nav-item action"> Follow </a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}

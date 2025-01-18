@@ -99,7 +99,7 @@ body{
 
 /*news feeds*/
 
-.feed-container, .login-container, .register-container{
+.feed-container, .login-container, .register-container, .profile-container{
   position: absolute;
   top: 0;
   left: 302px;
@@ -125,7 +125,7 @@ body{
   z-index: 1;
 }
 
-.post-container, .login-form, .register-form{
+.post-container, .login-form, .register-form, .user-details{
   position: relative;
   width: 695px;
   height: auto;
@@ -236,7 +236,7 @@ body{
   border-radius: 15px;
 }
 
-.user-img-name-container, .user-actions, .user-details{
+.user-img-name-container, .user-actions, .user-info{
   position: relative;
   width: 100%;
   height: 40%;
@@ -308,4 +308,25 @@ body{
   box-shadow: var(--box-shadow);
   border: 0;
   border-bottom: var(--border-color);
+}
+
+
+/*Profile page*/
+.user-info{
+  position: relative;
+  height: 250px;
+  width: 698px;
+  display: flex;
+  flex-direction: row;
+  border: var(--border-color);
+}
+
+.personal, .acc-details{
+  position: relative;
+  height: 100%;
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
