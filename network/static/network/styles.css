@@ -314,7 +314,7 @@ body{
 .profile-container{
   margin-top: 265px;
 }
-.user-info{
+.user-info, .new-post-container{
   position: fixed;
   top: 50px;
   left: 309px;
@@ -352,5 +352,31 @@ body{
 
 .follow{
   width: 95%;
+  background-color: var(--background-color);
+}
+
+/*post*/
+.new-post-container{
+  height: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  display: none;
+}
+
+.post-text{
+  width: 95%;
+  height: 60px;
+}
+.post-actions{
+  width: 95%;
+  height: 40px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.post-action{
+  width: 75px;
   background-color: var(--background-color);
 }
