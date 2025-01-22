@@ -8,8 +8,15 @@ document.addEventListener('DOMContentLoaded', function(){
   })
 
   //cancel post
-  document.querySelector('#cancel-post').addEventListener('click', ()=>{
+  document.querySelector('.post-action').addEventListener('click', ()=>{
     document.querySelector('.new-post-container').style.display = 'none';
     document.querySelector('.post-text').value ='';
   })
+
+  //Save Post
+  /*
+  document.querySelector('#save-post').addEventListener('click', ()=>{
+    document.querySelector('.new-post-container').style.display = 'none';
+    document.querySelector('.post-text').value ='';
+  })*/
 })

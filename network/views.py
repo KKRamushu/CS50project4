@@ -3,12 +3,14 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+from datetime import datetime
 
-from .models import User
+from .models import User, Post, Likes, Follow
 
 
 def index(request):
-    return render(request, "network/index.html")
+    allPosts = reversed(Post.objects.all())
+    return render(request, "network/index.html",{"allPosts":allPosts})
 
 def profile(request):
     return render(request, "network/profile.html")
@@ -63,3 +65,18 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "network/register.html")
+
+def post(request):
+    if request.method == "POST":
+        poster = request.user
+        content = request.POST["post-content"]
+        postTime = datetime.now().strftime("%d-%m-%Y %H:%M")
+        
+        newPost = Post(
+            poster = poster,
+            content = content,
+            timestamp = postTime
+        )
+
+        newPost.save()
+        return (index(request))

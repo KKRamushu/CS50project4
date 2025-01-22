@@ -7,120 +7,37 @@
         <h3 class="feeds-title">News Feeds</h3>
     </div>
 
-    <form action="" method="post" class="new-post-container">
+    <form action="{% url 'post' %}" method="post" class="new-post-container">
+        {% csrf_token %}
         <input type="text" name="post-content" id="" class="post-text form-control">
         <div class="post-actions">
             <input type="button" value="cancel" id="cancel-post" class="post-action btn-primary action">
-            <input type="submit" value="Post" class="post-action btn-primary action">
+            <input type="submit" value="Post" id="save-post" class="post-action btn-primary action">
         </div>
     </form>
-  
-    <div class="post-container">
-        <div class="post-header">
-            <div class="poster-container">
-                <div class="poster-img"></div>
-                <div class="poster-name"><h5>UserName</h5></div>
+    {% for post in allPosts %}
+        <div class="post-container">
+            <div class="post-header">
+                <div class="poster-container">
+                    <div class="poster-img"></div>
+                    <div class="poster-name"><h5>{{post.poster}}</h5></div>
+                </div>
+                <div class="post-time"><small>{{post.timestamp}}</small></div>
             </div>
-            <div class="post-time"><small>11:22</small></div>
-        </div>
 
-        <div class="post-body">
-            <p class="post-content">today is a lovely day, is'nt it?</p>
-        </div>
-        {% if user.is_authenticated %}
-        <div class="post-footer">
-            <div class="likes">like</div>
-            <div class="comment">comment</div>
-            <div class="share">share</div>
-            <div class="edit">edit</div>
-        </div>
-        {% endif %}
-    </div>
-    <div class="post-container">
-        <div class="post-header">
-            <div class="poster-container">
-                <div class="poster-img"></div>
-                <div class="poster-name"><h5>UserName</h5></div>
+            <div class="post-body">
+                <p class="post-content">{{post.content}}</p>
             </div>
-            <div class="post-time"><small>11:22</small></div>
-        </div>
-
-        <div class="post-body">
-            <p class="post-content">today is a lovely day, is'nt it?</p>
-        </div>
-        {% if user.is_authenticated %}
-        <div class="post-footer">
-            <div class="likes">like</div>
-            <div class="comment">comment</div>
-            <div class="share">share</div>
-            <div class="edit">edit</div>
-        </div>
-        {% endif %}
-    </div>
-    <div class="post-container">
-        <div class="post-header">
-            <div class="poster-container">
-                <div class="poster-img"></div>
-                <div class="poster-name"><h5>UserName</h5></div>
+            {% if user.is_authenticated %}
+            <div class="post-footer">
+                <div class="likes">like</div>
+                <div class="comment">comment</div>
+                <div class="share">share</div>
+                <div class="edit">edit</div>
             </div>
-            <div class="post-time"><small>11:22</small></div>
+            {% endif %}
         </div>
-
-        <div class="post-body">
-            <p class="post-content">today is a lovely day, is'nt it?</p>
-        </div>
-        {% if user.is_authenticated %}
-        <div class="post-footer">
-            <div class="likes">like</div>
-            <div class="comment">comment</div>
-            <div class="share">share</div>
-            <div class="edit">edit</div>
-        </div>
-        {% endif %}
-    </div>
-    <div class="post-container">
-        <div class="post-header">
-            <div class="poster-container">
-                <div class="poster-img"></div>
-                <div class="poster-name"><h5>UserName</h5></div>
-            </div>
-            <div class="post-time"><small>11:22</small></div>
-        </div>
-
-        <div class="post-body">
-            <p class="post-content">today is a lovely day, is'nt it?</p>
-        </div>
-        {% if user.is_authenticated %}
-        <div class="post-footer">
-            <div class="likes">like</div>
-            <div class="comment">comment</div>
-            <div class="share">share</div>
-            <div class="edit">edit</div>
-        </div>
-        {% endif %}
-    </div>
-    <div class="post-container">
-        <div class="post-header">
-            <div class="poster-container">
-                <div class="poster-img"></div>
-                <div class="poster-name"><h5>UserName</h5></div>
-            </div>
-            <div class="post-time"><small>11:22</small></div>
-        </div>
-
-        <div class="post-body">
-            <p class="post-content">today is a lovely day, is'nt it?</p>
-        </div>
-        {% if user.is_authenticated %}
-        <div class="post-footer">
-            <div class="likes">like</div>
-            <div class="comment">comment</div>
-            <div class="share">share</div>
-            <div class="edit">edit</div>
-        </div>
-        {% endif %}
-    </div>
-
+    {% endfor %}
 </div>
 
 {% endblock %}
