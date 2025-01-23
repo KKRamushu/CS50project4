@@ -9,11 +9,15 @@ from .models import User, Post, Likes, Follow
 
 
 def index(request):
-    allPosts = reversed(Post.objects.all())
-    return render(request, "network/index.html",{"allPosts":allPosts})
+    allPosts = Post.objects.all()
+    sortedPosts = sorted(allPosts, key=lambda allPosts: allPosts.timestamp, reverse=True)
+    return render(request, "network/index.html",{"allPosts":sortedPosts})
 
-def profile(request):
-    return render(request, "network/profile.html")
+def viewProfile(request,poster):
+    allPosts = Post.objects.filter(poster=poster)
+    sortedPosts = sorted(allPosts, key=lambda allPosts: allPosts.timestamp, reverse=True)
+    
+    return render(request, "network/profile.html",{"userPosts":sortedPosts})
 
 def login_view(request):
     if request.method == "POST":

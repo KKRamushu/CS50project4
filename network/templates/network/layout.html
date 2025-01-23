@@ -43,7 +43,7 @@
                 <div class="user-actions">
                     {% if user.is_authenticated %}
                         <a class="action nav-item" id="write-post" href="">Post</a>
-                        <a href="{% url 'profile' %}" class="action nav-item">Profile</a>
+                        <a href="{% url 'profile' poster=user.id %}" class="action nav-item">Profile</a>
                         <a class="action nav-item" href="{% url 'logout' %}">Log Out</a>
                     {% else %}
                     <a class="action nav-item" href="{% url 'login' %}">Log In</a>
