@@ -9,18 +9,24 @@
   <div class="user-info">
     <div class="personal">
       <div class="user-img "></div>
-      <div class="user-name"><strong>{{ user.username }}</strong></div>   
+      <div class="user-name"><strong>{{ posterName }}</strong></div>   
     </div>
 
     <div class="acc-details">
       <div class="followers-div">
-        <h4>Follower</h4>
+        <h4>{{followers}} Followers</h4>
       </div>
       <div class="following-div">
-        <h4>Following</h4>
+        <h4>{{following}} Following</h4>
       </div>
       <div class="follow">
-        <a href="" class="nav-item action"> Follow </a>
+        <form action="{% url 'follow' %}" method="post">
+          {%csrf_token%}
+          <input type="hidden" name="follower" value="{{user.id}}">
+          <input type="hidden" name="following" value="{{posterName.id}}">
+          <input type="submit" value="Follow" class="nav-item action">
+        </form>
+        
       </div>
     </div>
   </div>

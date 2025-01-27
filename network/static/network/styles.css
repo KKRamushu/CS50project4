@@ -16,6 +16,7 @@ html{
 body{
   background-color: var(--background-color-lite);
   color: var(--text-color);
+  overflow-x: scroll;
 }
 
 /*scroll bar*/

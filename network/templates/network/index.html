@@ -18,10 +18,10 @@
     {% for post in allPosts %}
         <div class="post-container">
             <div class="post-header">
-                <div class="poster-container">
+                <a href="{% url 'profile' poster=post.poster.id %}" class="poster-container">
                     <div class="poster-img"></div>
                     <div class="poster-name"><h5>{{post.poster}}</h5></div>
-                </div>
+                </a>
                 <div class="post-time"><small>{{post.timestamp}}</small></div>
             </div>
 

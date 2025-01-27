@@ -15,9 +15,14 @@ def index(request):
 
 def viewProfile(request,poster):
     allPosts = Post.objects.filter(poster=poster)
+
+    followers = len(Follow.objects.filter(following=poster))
+    following = len(Follow.objects.filter(follower=poster))
+    posterName = User.objects.get(id=poster)
     sortedPosts = sorted(allPosts, key=lambda allPosts: allPosts.timestamp, reverse=True)
     
-    return render(request, "network/profile.html",{"userPosts":sortedPosts})
+    return render(request, "network/profile.html",{"userPosts":sortedPosts, "followers": followers, "following": following,
+                                                   "posterName":posterName })
 
 def login_view(request):
     if request.method == "POST":
@@ -84,3 +89,14 @@ def post(request):
 
         newPost.save()
         return (index(request))
+
+def follow(request):
+    if request.method == 'POST':
+        follower = User.objects.get(id=request.POST['follower'])
+        following = User.objects.get(id=request.POST['following'])
+        follow = Follow(
+            follower = follower,
+            following = following
+        )
+        follow.save()
+        return viewProfile(request,following.id)
