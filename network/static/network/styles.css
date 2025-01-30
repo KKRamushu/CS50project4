@@ -339,7 +339,7 @@ body{
   flex-direction: column;
 }
 
-.followers-div, .following-div, .follow{
+.followers-div, .following-div, .follow-form, .follow, .unfollow{
   width: 95%;
   height: 50px;
   display: flex;
@@ -351,9 +351,24 @@ body{
   border: var(--text-color);
 }
 
+.follow-form{
+  background-color: var(--background-color);
+}
+
 .follow{
   width: 95%;
-  background-color: var(--background-color);
+  background-color: var(--background-color-lite);
+  color: var(--brand-color);
+}
+.follow:hover{
+  color: var(--text-color);
+}
+.unfollow{
+  width: 95%;
+  background-color: var(--brand-color);
+}
+.unfollow:hover{
+  color: var(--text-color);
 }
 
 /*post*/

@@ -19,10 +19,14 @@ def viewProfile(request,poster):
     followers = len(Follow.objects.filter(following=poster))
     following = len(Follow.objects.filter(follower=poster))
     posterName = User.objects.get(id=poster)
+    if (request.user.is_authenticated):
+        isFollowing = Follow.objects.filter(follower=request.user, following=posterName).exists()
+    else:
+        isFollowing = False
     sortedPosts = sorted(allPosts, key=lambda allPosts: allPosts.timestamp, reverse=True)
     
     return render(request, "network/profile.html",{"userPosts":sortedPosts, "followers": followers, "following": following,
-                                                   "posterName":posterName })
+                                                   "posterName":posterName, "isFollowing": isFollowing })
 
 def login_view(request):
     if request.method == "POST":
@@ -92,11 +96,15 @@ def post(request):
 
 def follow(request):
     if request.method == 'POST':
-        follower = User.objects.get(id=request.POST['follower'])
+        follower = request.user
         following = User.objects.get(id=request.POST['following'])
-        follow = Follow(
-            follower = follower,
-            following = following
-        )
-        follow.save()
+        followerExist = Follow.objects.filter(follower=follower,following=following)
+        if followerExist.exists():
+            followerExist.delete()
+        else:
+            follow = Follow(
+                follower = follower,
+                following = following
+            )
+            follow.save()
         return viewProfile(request,following.id)

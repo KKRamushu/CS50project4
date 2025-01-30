@@ -19,15 +19,18 @@
       <div class="following-div">
         <h4>{{following}} Following</h4>
       </div>
-      <div class="follow">
-        <form action="{% url 'follow' %}" method="post">
+      {% if posterName.id != user.id  %}
+        <form action="{% url 'follow' %}" method="post" class="follow-form">
           {%csrf_token%}
-          <input type="hidden" name="follower" value="{{user.id}}">
           <input type="hidden" name="following" value="{{posterName.id}}">
-          <input type="submit" value="Follow" class="nav-item action">
+          {%if isFollowing%}
+            <input type="submit" value="Unfollow" class="action nav-item follow">
+          {% else %}
+            <input type="submit" value="Follow" class="action nav-item unfollow">
+          {% endif %}
         </form>
-        
-      </div>
+      {% endif %}
+         
     </div>
   </div>
 
