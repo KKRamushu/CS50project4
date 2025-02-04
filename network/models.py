@@ -8,18 +8,18 @@ class User(AbstractUser):
 class Post(models.Model):
     poster = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user")
     content = models.CharField(max_length=800)
-    timestamp = models.CharField(max_length=20, null=True, blank=True)
+    timestamp = models.DateTimeField(auto_now_add=False)
     def __str__(self):
-        return f"{self.poster}, {self.content}, {self.timestamp}"
+        return f"{self.poster.username} posted {self.content}"
     
-class Likes(models.Model):
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="post")
+class Like(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="liked_post")
     liker = models.ForeignKey(User, on_delete=models.CASCADE, related_name="liker")
     def __str__ (self):
-        return f"{self.post}, {self.liker}"
+        return f"{self.post} is liked by {self.liker.username}"
     
 class Follow(models.Model):
-    follower = models.ForeignKey(User, on_delete=models.CASCADE, related_name="follower")
-    following = models.ForeignKey(User, on_delete=models.CASCADE, related_name="following")
+    follower = models.ForeignKey(User, on_delete=models.CASCADE, related_name="following_user")
+    following = models.ForeignKey(User, on_delete=models.CASCADE, related_name="followed_user")
     def __str__ (self):
-        return f"{self.follower}, {self.following}"
+        return f"{self.follower.username} follows {self.following.username}"

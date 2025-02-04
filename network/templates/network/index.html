@@ -6,7 +6,6 @@
     <div class="feeds-heading">
         <h3 class="feeds-title">News Feeds</h3>
     </div>
-
     <form action="{% url 'post' %}" method="post" class="new-post-container">
         {% csrf_token %}
         <input type="text" name="post-content" id="" class="post-text form-control">

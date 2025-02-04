@@ -5,13 +5,22 @@ from django.shortcuts import render
 from django.urls import reverse
 from datetime import datetime
 
-from .models import User, Post, Likes, Follow
+from .models import User, Post, Like, Follow
 
 
 def index(request):
     allPosts = Post.objects.all()
-    sortedPosts = sorted(allPosts, key=lambda allPosts: allPosts.timestamp, reverse=True)
+    sortedPosts = allPosts.order_by('timestamp')
     return render(request, "network/index.html",{"allPosts":sortedPosts})
+
+def followingPosts(request):
+    following = Follow.objects.filter(follower=request.user) 
+    allPosts = Post.objects.all()
+    followingPosts = set()
+    for follow in following:
+        followingPosts.update({post: post.content for post in allPosts if post.poster == follow.following})
+    #followingPosts = sorted(followingPosts, key=lambda post: post.timestamp, reverse=True)
+    return render(request, "network/index.html",{"allPosts":followingPosts})
 
 def viewProfile(request,poster):
     allPosts = Post.objects.filter(poster=poster)
@@ -23,7 +32,7 @@ def viewProfile(request,poster):
         isFollowing = Follow.objects.filter(follower=request.user, following=posterName).exists()
     else:
         isFollowing = False
-    sortedPosts = sorted(allPosts, key=lambda allPosts: allPosts.timestamp, reverse=True)
+    sortedPosts = allPosts.order_by('-timestamp')
     
     return render(request, "network/profile.html",{"userPosts":sortedPosts, "followers": followers, "following": following,
                                                    "posterName":posterName, "isFollowing": isFollowing })
@@ -83,7 +92,7 @@ def post(request):
     if request.method == "POST":
         poster = request.user
         content = request.POST["post-content"]
-        postTime = datetime.now().strftime("%d-%m-%Y %H:%M")
+        postTime = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         
         newPost = Post(
             poster = poster,
