@@ -1,6 +1,6 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
 from datetime import datetime
@@ -28,7 +28,7 @@ def viewProfile(request,poster):
         isFollowing = Follow.objects.filter(follower=request.user, following=posterName).exists()
     else:
         isFollowing = False
-    sortedPosts = allPosts.order_by('-timestamp')
+    sortedPosts = allPosts.order_by('timestamp')
     
     return render(request, "network/profile.html",{"userPosts":sortedPosts, "followers": followers,
                                                     "following": following,
@@ -114,3 +114,8 @@ def follow(request):
             )
             follow.save()
         return viewProfile(request,following.id)
+
+def like(request):
+    users = User.objects.all().values('username')
+    data = list(users)
+    return JsonResponse(data, safe=False)
