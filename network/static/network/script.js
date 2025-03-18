@@ -20,17 +20,6 @@ document.addEventListener('DOMContentLoaded', function(){
     document.querySelector('.post-text').value ='';
   })*/
 
-  const likeButton = document.querySelectorAll('.like-button')
-  likeButton.forEach(button=>{button.addEventListener('click', ()=>{
-    fetch('like',{
-      headers:{'Accept': 'application/json',
-        'X-Requested-With': 'XMLHttpRequest',
-      },
-    })
-    .then(response=>{return response.json()})
-    .then(data=>{
-      console.log(data)
-    })
-   })})
+  
   
 })

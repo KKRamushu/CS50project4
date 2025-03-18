@@ -115,7 +115,17 @@ def follow(request):
             follow.save()
         return viewProfile(request,following.id)
 
-def like(request):
-    users = User.objects.all().values('username')
-    data = list(users)
+def like(request, postId):
+    post = Post.objects.get(id=postId)
+    like = Like.objects.filter(post=post, liker=request.user)
+    if like.exists():
+        like.delete()
+    else:
+        new_like = Like(
+            post = post,
+            liker = request.user
+        )
+        new_like.save()
+    likes = len(Like.objects.filter(post = post))
+    data = list({likes})
     return JsonResponse(data, safe=False)

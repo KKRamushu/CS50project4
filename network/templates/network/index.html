@@ -1,6 +1,27 @@
 {% extends "network/layout.html" %}
 
 {% block body %}
+
+<script>
+    document.addEventListener('DOMContentLoaded', ()=>{
+        const likeButton = document.querySelectorAll('.like-button')
+  likeButton.forEach(button=>{button.addEventListener('click', ()=>{
+    let postId = button.getAttribute("data-id")
+    fetch(`like/${postId}`,{
+      headers:{'Accept': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest',
+      },
+    })
+    .then(response=>{return response.json()})
+    .then(data=>{
+      console.log(data[0])
+      button.innerHTML=`${data[0]} Likes`
+   
+    })
+   })})
+    })
+  
+</script>
 <!--News feed-->
 <div class="feed-container">
     <div class="feeds-heading">
@@ -29,7 +50,10 @@
             </div>
             {% if user.is_authenticated %}
             <div class="post-footer">
-                <div class="likes like-button">like</div>
+                <div class="likes like-button" data-id="{{post.id}}">
+                    <p class="number-of-likes"></p>
+                    like
+                </div>
                 <div class="comment">comment</div>
                 <div class="share">share</div>
                 <div class="edit">edit</div>
