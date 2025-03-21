@@ -5,20 +5,40 @@
 <script>
     document.addEventListener('DOMContentLoaded', ()=>{
         const likeButton = document.querySelectorAll('.like-button')
-  likeButton.forEach(button=>{button.addEventListener('click', ()=>{
-    let postId = button.getAttribute("data-id")
-    fetch(`like/${postId}`,{
-      headers:{'Accept': 'application/json',
-        'X-Requested-With': 'XMLHttpRequest',
-      },
-    })
-    .then(response=>{return response.json()})
-    .then(data=>{
-      console.log(data[0])
-      button.innerHTML=`${data[0]} Likes`
-   
-    })
-   })})
+            
+        likeButton.forEach(button=>{
+            let postId = button.getAttribute("data-id")
+            fetch(`likes/${postId}`,{
+                headers:{'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+            })
+            .then(response=>{return response.json()})
+            .then(data=>{
+                if (data[0] != null){
+                    button.innerHTML=`${data[0]} like`
+                } 
+            })
+        })
+
+        likeButton.forEach(button=>{button.addEventListener('click', ()=>{
+            let postId = button.getAttribute("data-id")
+            fetch(`like/${postId}`,{
+                headers:{'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+            })
+            .then(response=>{return response.json()})
+            .then(data=>{
+                if (data[0] != 0){
+                    button.innerHTML=`${data[0]} like`
+                }
+                else{
+                    button.innerHTML=`like`
+                }
+            })
+            })
+        })
     })
   
 </script>

@@ -129,3 +129,11 @@ def like(request, postId):
     likes = len(Like.objects.filter(post = post))
     data = list({likes})
     return JsonResponse(data, safe=False)
+
+def likes(request, postId):
+    post = Post.objects.get(id=postId)
+    if len(Like.objects.filter(post=post)) != 0:
+        data = list({len(Like.objects.filter(post=post))})
+        return JsonResponse(data, safe=False)
+    else:
+        return JsonResponse([], safe=False)
