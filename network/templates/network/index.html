@@ -16,9 +16,11 @@
             .then(response=>{return response.json()})
             .then(data=>{
                 if (data.likes != 0){
-                    console.log(data)
                     button.innerHTML=`${data.likes} like`
                 } 
+                if (data.isLiked){
+                    button.style.color = "#dd6b00"
+                }
             })
         })
 
@@ -36,6 +38,12 @@
                 }
                 else{
                     button.innerHTML=`like`
+                }
+                if (data.isLiked){
+                    button.style.color = "#dd6b00"
+                }else{
+                    button.style.color = "white"
+
                 }
             })
             })
@@ -63,7 +71,7 @@
                     <div class="poster-img"></div>
                     <div class="poster-name"><h5>{{post.poster}}</h5></div>
                 </a>
-                <div class="post-time"><small>{{post.timestamp}}</small></div>
+                <div class="post-time"><small>{{post.timestamp|date:"Y-m-d H:i"}}</small></div>
             </div>
 
             <div class="post-body">
@@ -77,7 +85,9 @@
                 </div>
                 <div class="comment">comment</div>
                 <div class="share">share</div>
+                {% if post.poster == user %}
                 <div class="edit">edit</div>
+                {% endif %}
             </div>
             {% endif %}
         </div>

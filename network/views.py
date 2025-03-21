@@ -10,7 +10,7 @@ from .models import User, Post, Like, Follow
 
 def index(request):
     allPosts = Post.objects.all()
-    sortedPosts = allPosts.order_by('timestamp')
+    sortedPosts = allPosts.order_by('-timestamp')
     return render(request, "network/index.html",{"allPosts":sortedPosts})
 
 def followingPosts(request):
@@ -127,7 +127,8 @@ def like(request, postId):
         )
         new_like.save()
     likes = Like.objects.filter(post = post).count()
-    data = {'likes':likes}
+    data = {'likes':likes,
+            'isLiked':like.exists()}
     return JsonResponse(data)
 
 def likes(request, postId):
