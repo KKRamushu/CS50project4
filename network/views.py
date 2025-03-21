@@ -126,14 +126,15 @@ def like(request, postId):
             liker = request.user
         )
         new_like.save()
-    likes = len(Like.objects.filter(post = post))
-    data = list({likes})
-    return JsonResponse(data, safe=False)
+    likes = Like.objects.filter(post = post).count()
+    data = {'likes':likes}
+    return JsonResponse(data)
 
 def likes(request, postId):
     post = Post.objects.get(id=postId)
-    if len(Like.objects.filter(post=post)) != 0:
-        data = list({len(Like.objects.filter(post=post))})
-        return JsonResponse(data, safe=False)
-    else:
-        return JsonResponse([], safe=False)
+    isLiked = Like.objects.filter(post=post, liker=request.user).exists()
+    data = {
+            "likes": Like.objects.filter(post=post).count(),
+            "isLiked": isLiked
+        }
+    return JsonResponse(data)

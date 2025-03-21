@@ -15,8 +15,9 @@
             })
             .then(response=>{return response.json()})
             .then(data=>{
-                if (data[0] != null){
-                    button.innerHTML=`${data[0]} like`
+                if (data.likes != 0){
+                    console.log(data)
+                    button.innerHTML=`${data.likes} like`
                 } 
             })
         })
@@ -30,8 +31,8 @@
             })
             .then(response=>{return response.json()})
             .then(data=>{
-                if (data[0] != 0){
-                    button.innerHTML=`${data[0]} like`
+                if (data.likes != 0){
+                    button.innerHTML=`${data.likes} like`
                 }
                 else{
                     button.innerHTML=`like`
