@@ -1,9 +1,10 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, get_list_or_404
 from django.urls import reverse
 from datetime import datetime
+
 
 from .models import User, Post, Like, Follow
 
@@ -139,3 +140,11 @@ def likes(request, postId):
             "isLiked": isLiked
         }
     return JsonResponse(data)
+
+def edit(request,postId):
+    
+    post = Post.objects.get(id=postId)
+    data = {"id": post.id,
+            "poster": post.poster.username,
+            "content": post.content}
+    return JsonResponse(data, safe=False)

@@ -48,6 +48,39 @@
             })
             })
         })
+
+        /********Edit function*********/
+
+        const editButton = document.querySelectorAll('.edit')
+
+        editButton.forEach(button=>{button.addEventListener('click', ()=>{
+            postId = button.getAttribute("data-id")
+            /*fetch post to be edited*/
+            fetch(`edit/${postId}`,{
+                headers:{'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+            })
+            .then(response=>{return response.json()})
+            .then(data=>{
+                
+                /**Creat a text area and fill it with the contents of the post to be edited**/
+
+                const posActions = document.querySelector(`#post-footer-${postId}`)
+                const editActions = document.querySelector(`#edit-footer-${postId}`)
+                const postContent = document.querySelector(`#content-${postId}`)
+
+                const postEditText = document.querySelector(`#edit-${postId}`)
+                postEditText.style.opacity = 1
+                postContent.style.opacity = 0
+                posActions.style.opacity = 0
+                editActions.style.opacity = 1
+                editActions.style.zindex = 1
+                postEditText.value = data.content
+                
+            })
+        })})
+
     })
   
 </script>
@@ -75,20 +108,23 @@
             </div>
 
             <div class="post-body">
-                <p class="post-content">{{post.content}}</p>
+                <p class="post-content" id="content-{{post.id}}">{{post.content}}</p>
+                <textarea name="edit-text" id="edit-{{post.id}}"></textarea>
             </div>
             {% if user.is_authenticated %}
-            <div class="post-footer">
-                <div class="likes like-button" data-id="{{post.id}}">
-                    <p class="number-of-likes"></p>
-                    like
-                </div>
-                <div class="comment">comment</div>
-                <div class="share">share</div>
+            <div class="edit-footer" id="edit-footer-{{post.id}}">
+                <button class=" edit-buttons cancel-edit">cancel</button>
+                <button class=" edit-buttons save-changes">save</button>
+            </div>
+            <div class="post-footer" id="post-footer-{{post.id}}">
+                <div class="likes buttons like-button" data-id="{{post.id}}">like</div>
+                <div class="comment buttons">comment</div>
+                <div class="share buttons">share</div>
                 {% if post.poster == user %}
-                <div class="edit">edit</div>
+                <div class="edit buttons" data-id="{{post.id}}">edit</div>
                 {% endif %}
             </div>
+
             {% endif %}
         </div>
     {% endfor %}
