@@ -19,6 +19,17 @@ body{
   overflow-x: scroll;
 }
 
+.overlay{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  opacity: 0;
+  z-index: -10;
+}
+
 /*scroll bar*/
 
 ::-webkit-scrollbar{
@@ -180,18 +191,17 @@ body{
   opacity: 1;
 }
 textarea{
-  opacity: 0;
+  display: none;
+  z-index: 1;
 }
 
 .post-footer, .edit-footer{
   position: absolute;
-  height: 35px;
   width: 35%;
   bottom: 0
 }
 .edit-footer{
-  opacity: 0;
-  z-index: 0;
+  display: none;
 }
 
 .poster-container{

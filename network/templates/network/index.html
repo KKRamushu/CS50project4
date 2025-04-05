@@ -52,6 +52,7 @@
         /********Edit function*********/
 
         const editButton = document.querySelectorAll('.edit')
+        const overlayDiv = document.querySelector(".overlay")
 
         editButton.forEach(button=>{button.addEventListener('click', ()=>{
             postId = button.getAttribute("data-id")
@@ -69,22 +70,73 @@
                 const posActions = document.querySelector(`#post-footer-${postId}`)
                 const editActions = document.querySelector(`#edit-footer-${postId}`)
                 const postContent = document.querySelector(`#content-${postId}`)
+                const postTimestamp = document.querySelector(`#timestamp-${postId}`)
 
                 const postEditText = document.querySelector(`#edit-${postId}`)
-                postEditText.style.opacity = 1
-                postContent.style.opacity = 0
-                posActions.style.opacity = 0
-                editActions.style.opacity = 1
-                editActions.style.zindex = 1
                 postEditText.value = data.content
+
+                postEditText.style.zIndex = 11
+                editActions.style.zIndex = 11
+                overlayDiv.style.zIndex = 10
+                overlayDiv.style.opacity = 0.05
+                postEditText.style.display = "block"
+                postContent.style.display = "none"
+                posActions.style.display = "none"
+                editActions.style.display = "block"
+                editActions.style.display = "flex"
+                
+                /** Create an eventlistener for the save button**/
+
+                const saveButton = document.querySelector(`#save-${postId}`)
+
+                saveButton.addEventListener('click', ()=>{
+                    editedPostContent = postEditText.value
+                    
+                    fetch(`edited/${postId}`,{
+                        method: "PUT",
+                        headers:{'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest',
+                        },
+                        body: JSON.stringify({"contents": editedPostContent}),
+                    })
+                    .then(response =>{return response.json()})
+                    .then(data => {
+                        console.log(data)
+                        postContent.innerHTML = data.content
+                        postTimestamp.innerHTML = data.timeStamp
+                        cancelEdit()
+                    })
+                    .catch(error => {console.log(error)})
+                })
+
+                // Cancel Edit button eventlistener
+                const cancelButton = document.querySelector(`#cancel-${postId}`)
+
+                cancelButton.addEventListener("click", cancelEdit)
+
+                function cancelEdit(){
+                    postEditText.style.zIndex = 1
+                    editActions.style.zIndex = 1
+                    overlayDiv.style.zIndex = -10
+                    overlayDiv.style.opacity = 0
+
+                    postEditText.style.display = "none"
+                    postContent.style.display = "block"
+                    posActions.style.display = "block"
+                    posActions.style.display = "flex"
+                    editActions.style.display = "none"
+                }
                 
             })
         })})
+
+        
 
     })
   
 </script>
 <!--News feed-->
+<div class="overlay"></div>
 <div class="feed-container">
     <div class="feeds-heading">
         <h3 class="feeds-title">News Feeds</h3>
@@ -104,7 +156,7 @@
                     <div class="poster-img"></div>
                     <div class="poster-name"><h5>{{post.poster}}</h5></div>
                 </a>
-                <div class="post-time"><small>{{post.timestamp|date:"Y-m-d H:i"}}</small></div>
+                <div class="post-time"><small id="timestamp-{{post.id}}">{{post.timestamp|date:"Y-m-d H:i"}}</small></div>
             </div>
 
             <div class="post-body">
@@ -113,8 +165,8 @@
             </div>
             {% if user.is_authenticated %}
             <div class="edit-footer" id="edit-footer-{{post.id}}">
-                <button class=" edit-buttons cancel-edit">cancel</button>
-                <button class=" edit-buttons save-changes">save</button>
+                <button class=" edit-buttons cancel-edit" id="cancel-{{post.id}}">cancel</button>
+                <button class=" edit-buttons save-changes" id="save-{{post.id}}">save</button>
             </div>
             <div class="post-footer" id="post-footer-{{post.id}}">
                 <div class="likes buttons like-button" data-id="{{post.id}}">like</div>

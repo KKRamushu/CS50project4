@@ -1,10 +1,11 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from django.shortcuts import render, get_list_or_404
+from django.shortcuts import render
 from django.urls import reverse
 from datetime import datetime
-
+import json
+from django.views.decorators.csrf import csrf_exempt
 
 from .models import User, Post, Like, Follow
 
@@ -142,9 +143,23 @@ def likes(request, postId):
     return JsonResponse(data)
 
 def edit(request,postId):
+    # fetch post fron database and return it as JSON data to page
     
     post = Post.objects.get(id=postId)
     data = {"id": post.id,
             "poster": post.poster.username,
             "content": post.content}
     return JsonResponse(data, safe=False)
+
+@csrf_exempt
+def edited(request, postId):
+    if request.method != "PUT":
+        return ({"error":"incorrect request!"})
+    data = json.loads(request.body)
+    post = Post.objects.get(id=postId)
+    post.content = data["contents"]
+    post.timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    post.save()
+    newPost = {"timeStamp": post.timestamp,
+            "content": post.content}
+    return JsonResponse(newPost, safe=False)
