@@ -2,145 +2,45 @@
 
 {% block body %}
 
-<script>
-    document.addEventListener('DOMContentLoaded', ()=>{
-        const likeButton = document.querySelectorAll('.like-button')
-            
-        likeButton.forEach(button=>{
-            let postId = button.getAttribute("data-id")
-            fetch(`likes/${postId}`,{
-                headers:{'Accept': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest',
-                },
-            })
-            .then(response=>{return response.json()})
-            .then(data=>{
-                if (data.likes != 0){
-                    button.innerHTML=`${data.likes} like`
-                } 
-                if (data.isLiked){
-                    button.style.color = "#dd6b00"
-                }
-            })
-        })
-
-        likeButton.forEach(button=>{button.addEventListener('click', ()=>{
-            let postId = button.getAttribute("data-id")
-            fetch(`like/${postId}`,{
-                headers:{'Accept': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest',
-                },
-            })
-            .then(response=>{return response.json()})
-            .then(data=>{
-                if (data.likes != 0){
-                    button.innerHTML=`${data.likes} like`
-                }
-                else{
-                    button.innerHTML=`like`
-                }
-                if (data.isLiked){
-                    button.style.color = "#dd6b00"
-                }else{
-                    button.style.color = "white"
-
-                }
-            })
-            })
-        })
-
-        /********Edit function*********/
-
-        const editButton = document.querySelectorAll('.edit')
-        const overlayDiv = document.querySelector(".overlay")
-
-        editButton.forEach(button=>{button.addEventListener('click', ()=>{
-            postId = button.getAttribute("data-id")
-            /*fetch post to be edited*/
-            fetch(`edit/${postId}`,{
-                headers:{'Accept': 'application/json',
-                    'X-Requested-With': 'XMLHttpRequest',
-                },
-            })
-            .then(response=>{return response.json()})
-            .then(data=>{
-                
-                /**Creat a text area and fill it with the contents of the post to be edited**/
-
-                const posActions = document.querySelector(`#post-footer-${postId}`)
-                const editActions = document.querySelector(`#edit-footer-${postId}`)
-                const postContent = document.querySelector(`#content-${postId}`)
-                const postTimestamp = document.querySelector(`#timestamp-${postId}`)
-
-                const postEditText = document.querySelector(`#edit-${postId}`)
-                postEditText.value = data.content
-
-                postEditText.style.zIndex = 11
-                editActions.style.zIndex = 11
-                overlayDiv.style.zIndex = 10
-                overlayDiv.style.opacity = 0.05
-                postEditText.style.display = "block"
-                postContent.style.display = "none"
-                posActions.style.display = "none"
-                editActions.style.display = "block"
-                editActions.style.display = "flex"
-                
-                /** Create an eventlistener for the save button**/
-
-                const saveButton = document.querySelector(`#save-${postId}`)
-
-                saveButton.addEventListener('click', ()=>{
-                    editedPostContent = postEditText.value
-                    
-                    fetch(`edited/${postId}`,{
-                        method: "PUT",
-                        headers:{'Accept': 'application/json',
-                        'X-Requested-With': 'XMLHttpRequest',
-                        },
-                        body: JSON.stringify({"contents": editedPostContent}),
-                    })
-                    .then(response =>{return response.json()})
-                    .then(data => {
-                        console.log(data)
-                        postContent.innerHTML = data.content
-                        postTimestamp.innerHTML = data.timeStamp
-                        cancelEdit()
-                    })
-                    .catch(error => {console.log(error)})
-                })
-
-                // Cancel Edit button eventlistener
-                const cancelButton = document.querySelector(`#cancel-${postId}`)
-
-                cancelButton.addEventListener("click", cancelEdit)
-
-                function cancelEdit(){
-                    postEditText.style.zIndex = 1
-                    editActions.style.zIndex = 1
-                    overlayDiv.style.zIndex = -10
-                    overlayDiv.style.opacity = 0
-
-                    postEditText.style.display = "none"
-                    postContent.style.display = "block"
-                    posActions.style.display = "block"
-                    posActions.style.display = "flex"
-                    editActions.style.display = "none"
-                }
-                
-            })
-        })})
-
-        
-
-    })
-  
-</script>
 <!--News feed-->
 <div class="overlay"></div>
 <div class="feed-container">
+    {% if profile %}
+      <div class="feeds-heading">
+        <h3 class="feeds-title login-title">Profile</h3>
+      </div>
+      <div class="user-info">
+        <div class="personal">
+          <div class="user-img "></div>
+          <div class="user-name"><strong>{{ posterName }}</strong></div>   
+        </div>
+    
+        <div class="acc-details">
+          <div class="followers-div">
+            <h4>{{followers}} Followers</h4>
+          </div>
+          <div class="following-div">
+            <h4>{{following}} Following</h4>
+          </div>
+          {% if posterName.id != user.id  %}
+            <form action="{% url 'follow' %}" method="post" class="follow-form">
+              {%csrf_token%}
+              <input type="hidden" name="following" value="{{posterName.id}}">
+              {%if isFollowing%}
+                <input type="submit" value="Unfollow" class="action nav-item follow">
+              {% else %}
+                <input type="submit" value="Follow" class="action nav-item unfollow">
+              {% endif %}
+            </form>
+          {% endif %}
+             
+        </div>
+      </div>
+    {% else%}
     <div class="feeds-heading">
         <h3 class="feeds-title">News Feeds</h3>
     </div>
+    {% endif %}
     <form action="{% url 'post' %}" method="post" class="new-post-container">
         {% csrf_token %}
         <input type="text" name="post-content" id="" class="post-text form-control">

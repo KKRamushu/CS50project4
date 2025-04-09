@@ -360,9 +360,7 @@ textarea{
   margin-top: 265px;
 }
 .user-info, .new-post-container{
-  position: fixed;
-  top: 50px;
-  left: 309px;
+  position: relative;
   height: 250px;
   width: 698px;
   display: flex;
@@ -372,6 +370,8 @@ textarea{
   box-shadow: var(--box-shadow);
   z-index: 1;
 }
+
+
 
 .personal, .acc-details{
   position: relative;

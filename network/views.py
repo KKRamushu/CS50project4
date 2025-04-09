@@ -13,7 +13,7 @@ from .models import User, Post, Like, Follow
 def index(request):
     allPosts = Post.objects.all()
     sortedPosts = allPosts.order_by('-timestamp')
-    return render(request, "network/index.html",{"allPosts":sortedPosts})
+    return render(request, "network/index.html",{"allPosts":sortedPosts, "profile": False})
 
 def followingPosts(request):
     following = Follow.objects.filter(follower=request.user).values_list('following', flat=True)  
@@ -32,7 +32,7 @@ def viewProfile(request,poster):
         isFollowing = False
     sortedPosts = allPosts.order_by('timestamp')
     
-    return render(request, "network/profile.html",{"userPosts":sortedPosts, "followers": followers,
+    return render(request, "network/index.html",{"profile": True, "allPosts":sortedPosts, "followers": followers,
                                                     "following": following,
                                                    "posterName":posterName, "isFollowing": isFollowing })
 
