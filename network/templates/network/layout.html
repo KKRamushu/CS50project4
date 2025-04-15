@@ -17,7 +17,7 @@
             <div class="user-nav-bar">
               <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                  <a class="nav-link" href="{% url 'index' %}">All Posts</a>
+                  <a class="nav-link" href="{% url 'index' %}?page=1">All Posts</a>
                 </li>
                 {% if user.is_authenticated %}
                     <li class="nav-item">

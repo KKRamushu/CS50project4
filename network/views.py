@@ -6,13 +6,15 @@ from django.urls import reverse
 from datetime import datetime
 import json
 from django.views.decorators.csrf import csrf_exempt
+from django.core.paginator import Paginator
 
 from .models import User, Post, Like, Follow
 
 
 def index(request):
-    allPosts = Post.objects.all()
-    sortedPosts = allPosts.order_by('-timestamp')
+    allPosts = Post.objects.all().order_by('-timestamp')
+    page = request.GET.get('page')
+    sortedPosts = Paginator(allPosts, 2).get_page(page)
     return render(request, "network/index.html",{"allPosts":sortedPosts, "profile": False})
 
 def followingPosts(request):

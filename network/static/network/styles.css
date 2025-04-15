@@ -17,6 +17,7 @@ body{
   background-color: var(--background-color-lite);
   color: var(--text-color);
   overflow-x: scroll;
+  height: 100%;
 }
 
 .overlay{
@@ -47,6 +48,9 @@ body{
   background-color: var(--background-color-selected);
 }
 /*nav-bar*/
+a{
+  text-decoration: none;
+}
 .nav-link, .navbar-brand{
   color: var(--text-color);
   text-decoration: none;
@@ -122,6 +126,9 @@ body{
   display: flex;
   align-items: center;
   flex-direction: column;
+}
+.feed-container{
+  height: 100%;
 }
 .feeds-heading{
   position: fixed;
@@ -417,7 +424,7 @@ textarea{
 
 /*post*/
 .new-post-container{
-  height: 150px;
+  height: 250px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -426,12 +433,12 @@ textarea{
 }
 
 .post-text{
-  width: 95%;
+  width: 98%;
   height: 60px;
 }
-.post-actions{
+.post-actions, .pagination-control-container{
   width: 95%;
-  height: 40px;
+  height: 60px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -439,4 +446,20 @@ textarea{
 .post-action{
   width: 75px;
   background-color: var(--background-color);
+}
+
+.pagination-control-container{
+  position: fixed;
+  bottom: 50px;
+  width: 10em;
+  height: 25px;
+  border-width: 2px;
+  box-shadow: var(--box-shadow);
+}
+.paginator-control{
+  text-align: center;
+  width: 5em;
+}
+.paginator-nxt:hover{
+  background-color: var(--brand-color);
 }
