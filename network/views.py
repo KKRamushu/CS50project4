@@ -20,10 +20,12 @@ def index(request):
 def followingPosts(request):
     following = Follow.objects.filter(follower=request.user).values_list('following', flat=True)  
     followingPosts = Post.objects.filter(poster__in=following).order_by('timestamp')
-    return render(request, "network/index.html",{"allPosts":followingPosts})
+    page = request.GET.get('page')
+    sortedPosts = Paginator(followingPosts,2).get_page(page)
+    return render(request, "network/index.html",{"allPosts":sortedPosts})
 
 def viewProfile(request,poster):
-    allPosts = Post.objects.filter(poster=poster)
+    allPosts = Post.objects.filter(poster=poster).order_by('-timestamp')
 
     followers = len(Follow.objects.filter(following=poster))
     following = len(Follow.objects.filter(follower=poster))
@@ -32,7 +34,8 @@ def viewProfile(request,poster):
         isFollowing = Follow.objects.filter(follower=request.user, following=posterName).exists()
     else:
         isFollowing = False
-    sortedPosts = allPosts.order_by('timestamp')
+    page = request.GET.get('page')
+    sortedPosts = Paginator(allPosts, 2).get_page(page)
     
     return render(request, "network/index.html",{"profile": True, "allPosts":sortedPosts, "followers": followers,
                                                     "following": following,

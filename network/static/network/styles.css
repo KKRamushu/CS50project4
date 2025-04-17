@@ -60,8 +60,8 @@ a{
   position: fixed;
   top: 0;
   left: 0;
-  height: 640px;
-  width: 300px;
+  height: 100vh;
+  width: 22%;
   border-right: var(--border-color);
   background-color: black;
 }
@@ -118,9 +118,10 @@ a{
 .feed-container, .login-container, .register-container, .profile-container{
   position: absolute;
   top: 0;
-  left: 302px;
-  height: 638px;
-  width: 710px;
+  left: 22%;
+  right: 22%;
+  height: 100vh;
+  width: 56%;
   padding-bottom: 50px;
   padding-top: 50px;
   display: flex;
@@ -133,8 +134,9 @@ a{
 .feeds-heading{
   position: fixed;
   top: 0px;
-  left: 302px;
-  width: 710px;
+  left: 22%;
+  right: 22%;
+  width: 56%;
   height: 50px;
   display: flex;
   align-items: center;
@@ -146,7 +148,7 @@ a{
 
 .post-container, .login-form, .register-form, .user-details{
   position: relative;
-  width: 690px;
+  width: 98%;
   height: auto;
   margin-top: 5px;
   margin-bottom: 5px;
@@ -267,8 +269,8 @@ textarea{
   position: fixed;
   top: 0px;
   right: 0;
-  width: 340px;
-  height: 640px;
+  width: 22%;
+  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;

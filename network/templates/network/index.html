@@ -80,13 +80,15 @@
             {% endif %}
         </div>
     {% endfor %}
-
+    
+    {% if allPosts.paginator.num_pages > 1 %}
     <div class="pagination-control-container"> 
       {% if allPosts.has_previous %} <a class="paginator-control  paginator-nxt" href="?page={{allPosts.previous_page_number}}">prev</a> {% endif %}
       <span class="paginator-control">{{allPosts.number}}/{{allPosts.paginator.num_pages}}</span>
       {% if allPosts.has_next %} <a class="paginator-control paginator-nxt" href="?page={{allPosts.next_page_number}}">next</a> {% endif %}
 
     </div>
+    {% endif %}
 </div>
 
 {% endblock %}
