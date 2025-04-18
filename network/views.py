@@ -4,6 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
 from datetime import datetime
+from django.utils import timezone
 import json
 from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator
@@ -12,24 +13,30 @@ from .models import User, Post, Like, Follow
 
 
 def index(request):
+    # Gets all postings and present them in groups of 10 per page
+
     allPosts = Post.objects.all().order_by('-timestamp')
     page = request.GET.get('page')
     sortedPosts = Paginator(allPosts, 2).get_page(page)
     return render(request, "network/index.html",{"allPosts":sortedPosts, "profile": False})
 
 def followingPosts(request):
+    # Get posts from users that are followed by current user
+
     following = Follow.objects.filter(follower=request.user).values_list('following', flat=True)  
-    followingPosts = Post.objects.filter(poster__in=following).order_by('timestamp')
+    followingPosts = Post.objects.filter(poster__in=following).order_by('-timestamp')
     page = request.GET.get('page')
     sortedPosts = Paginator(followingPosts,2).get_page(page)
     return render(request, "network/index.html",{"allPosts":sortedPosts})
 
-def viewProfile(request,poster):
-    allPosts = Post.objects.filter(poster=poster).order_by('-timestamp')
+# 
+def viewProfile(request,posterId):
+    # View user posts, followings, and followers
 
-    followers = len(Follow.objects.filter(following=poster))
-    following = len(Follow.objects.filter(follower=poster))
-    posterName = User.objects.get(id=poster)
+    allPosts = Post.objects.filter(poster=posterId).order_by('-timestamp')
+    followers = len(Follow.objects.filter(following=posterId))
+    following = len(Follow.objects.filter(follower=posterId))
+    posterName = User.objects.get(id=posterId)
     if (request.user.is_authenticated):
         isFollowing = Follow.objects.filter(follower=request.user, following=posterName).exists()
     else:
@@ -93,10 +100,12 @@ def register(request):
         return render(request, "network/register.html")
 
 def post(request):
+    # Make new posting
+
     if request.method == "POST":
         poster = request.user
         content = request.POST["post-content"]
-        postTime = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        postTime = timezone.now()
         
         newPost = Post(
             poster = poster,
@@ -105,9 +114,11 @@ def post(request):
         )
 
         newPost.save()
-        return (index(request))
+        return HttpResponseRedirect(reverse("index"))
 
 def follow(request):
+    # Follow or unfollow a user
+
     if request.method == 'POST':
         follower = request.user
         following = User.objects.get(id=request.POST['following'])
@@ -115,14 +126,16 @@ def follow(request):
         if followerExist.exists():
             followerExist.delete()
         else:
-            follow = Follow(
+            new_follow = Follow(
                 follower = follower,
                 following = following
             )
-            follow.save()
+            new_follow.save()
         return viewProfile(request,following.id)
 
 def like(request, postId):
+    # Like or unlike a post
+
     post = Post.objects.get(id=postId)
     like = Like.objects.filter(post=post, liker=request.user)
     if like.exists():
@@ -139,6 +152,8 @@ def like(request, postId):
     return JsonResponse(data)
 
 def likes(request, postId):
+    # Check if a post is liked and get the total number of likes 
+
     post = Post.objects.get(id=postId)
     isLiked = Like.objects.filter(post=post, liker=request.user).exists()
     data = {
@@ -148,7 +163,7 @@ def likes(request, postId):
     return JsonResponse(data)
 
 def edit(request,postId):
-    # fetch post fron database and return it as JSON data to page
+    # fetch post from database and return it as JSON data to page as editable text
     
     post = Post.objects.get(id=postId)
     data = {"id": post.id,
@@ -158,12 +173,14 @@ def edit(request,postId):
 
 @csrf_exempt
 def edited(request, postId):
+    # Save edited post
+
     if request.method != "PUT":
         return ({"error":"incorrect request!"})
     data = json.loads(request.body)
     post = Post.objects.get(id=postId)
     post.content = data["contents"]
-    post.timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    post.timestamp = timezone.now()
     post.save()
     newPost = {"timeStamp": post.timestamp,
             "content": post.content}
