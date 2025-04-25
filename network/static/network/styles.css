@@ -134,9 +134,9 @@ a{
 .feeds-heading{
   position: fixed;
   top: 0px;
-  left: 22%;
+  left: 22.1%;
   right: 22%;
-  width: 56%;
+  width: 55.8%;
   height: 50px;
   display: flex;
   align-items: center;
@@ -450,13 +450,15 @@ textarea{
   background-color: var(--background-color);
 }
 
+
 .pagination-control-container{
   position: fixed;
-  bottom: 50px;
+  bottom: 10px;
   width: 10em;
   height: 25px;
   border-width: 2px;
   box-shadow: var(--box-shadow);
+  z-index: 2;
 }
 .paginator-control{
   text-align: center;
@@ -464,4 +466,20 @@ textarea{
 }
 .paginator-nxt:hover{
   background-color: var(--brand-color);
+}
+
+/* Bottom */
+.bottom-bar{
+  position: fixed;
+  bottom: 0px;
+  left: 22.1%;
+  right: 22%;
+  width: 55.8%;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--background-color-lite);
+  box-shadow:  0 -5px 8px -1px rgba(87, 87, 86, 0.4);
+  z-index: 1;
 }

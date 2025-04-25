@@ -17,21 +17,14 @@
     
         <div class="acc-details">
           <div class="followers-div">
-            <h4>{{followers}} Followers</h4>
+            <h4 class="followers">{{followers}} Followers</h4>
           </div>
           <div class="following-div">
             <h4>{{following}} Following</h4>
           </div>
           {% if posterName.id != user.id  %}
-            <form action="{% url 'follow' %}" method="post" class="follow-form">
-              {%csrf_token%}
-              <input type="hidden" name="following" value="{{posterName.id}}">
-              {%if isFollowing%}
-                <input type="submit" value="Unfollow" class="action nav-item follow">
-              {% else %}
-                <input type="submit" value="Follow" class="action nav-item unfollow">
-              {% endif %}
-            </form>
+            <input type="button" class="action nav-item follow" data-id="{{posterName.id}}" value="{%if isFollowing%}Unfollow{%else%}Follow{%endif%}">
+
           {% endif %}
              
         </div>
@@ -89,6 +82,8 @@
 
     </div>
     {% endif %}
+
+    <div class="bottom-bar"></div>
 </div>
 
 {% endblock %}

@@ -150,6 +150,28 @@ document.addEventListener('DOMContentLoaded', function(){
           
       })
   })})
+
+  /** Follow or unfollow a user**/
+
+  const followButton = document.querySelector(".follow")
+  const followersDiv = document.querySelector(".followers")
+  followButton.addEventListener('click',()=>{
+    userId = followButton.getAttribute("data-id")
+    fetch(`/follow/`,{
+        method: "POST",
+        headers:{'Accept': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest',
+        },
+        body: JSON.stringify({"userId": userId}),
+    })
+    .then(response => {return response.json()})
+    .then(data =>{
+
+        data.isFollowing? followButton.value = "Unfollow":followButton.value = "Follow"
+        followersDiv.innerHTML= `${data.followers} Followers`
+        
+    })
+  })
   
 })
 

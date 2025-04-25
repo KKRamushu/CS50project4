@@ -17,7 +17,7 @@ def index(request):
 
     allPosts = Post.objects.all().order_by('-timestamp')
     page = request.GET.get('page')
-    sortedPosts = Paginator(allPosts, 2).get_page(page)
+    sortedPosts = Paginator(allPosts, 5).get_page(page)
     return render(request, "network/index.html",{"allPosts":sortedPosts, "profile": False})
 
 def followingPosts(request):
@@ -27,22 +27,22 @@ def followingPosts(request):
     followingPosts = Post.objects.filter(poster__in=following).order_by('-timestamp')
     page = request.GET.get('page')
     sortedPosts = Paginator(followingPosts,2).get_page(page)
-    return render(request, "network/index.html",{"allPosts":sortedPosts})
+    return render(request, "network/index.html",{"allPosts":sortedPosts,"profile": False})
 
 # 
 def viewProfile(request,posterId):
     # View user posts, followings, and followers
 
     allPosts = Post.objects.filter(poster=posterId).order_by('-timestamp')
-    followers = len(Follow.objects.filter(following=posterId))
-    following = len(Follow.objects.filter(follower=posterId))
+    followers = Follow.objects.filter(following=posterId).count()
+    following = Follow.objects.filter(follower=posterId).count()
     posterName = User.objects.get(id=posterId)
     if (request.user.is_authenticated):
         isFollowing = Follow.objects.filter(follower=request.user, following=posterName).exists()
     else:
         isFollowing = False
     page = request.GET.get('page')
-    sortedPosts = Paginator(allPosts, 2).get_page(page)
+    sortedPosts = Paginator(allPosts, 10).get_page(page)
     
     return render(request, "network/index.html",{"profile": True, "allPosts":sortedPosts, "followers": followers,
                                                     "following": following,
@@ -116,22 +116,30 @@ def post(request):
         newPost.save()
         return HttpResponseRedirect(reverse("index"))
 
+@csrf_exempt
 def follow(request):
     # Follow or unfollow a user
 
-    if request.method == 'POST':
-        follower = request.user
-        following = User.objects.get(id=request.POST['following'])
-        followerExist = Follow.objects.filter(follower=follower,following=following)
-        if followerExist.exists():
-            followerExist.delete()
-        else:
-            new_follow = Follow(
-                follower = follower,
-                following = following
-            )
-            new_follow.save()
-        return viewProfile(request,following.id)
+    if request.method != 'POST':
+        return ({"error":"incorrect request!"})
+    follower = request.user
+    data = json.loads(request.body)
+    userId = data["userId"]
+    following = User.objects.get(id= userId)
+    followerExist = Follow.objects.filter(follower=follower,following=following)
+    if followerExist.exists():
+        followerExist.delete()
+    else:
+        new_follow = Follow(
+            follower = follower,
+            following = following
+        )
+        new_follow.save()
+    data = {
+        "isFollowing": Follow.objects.filter(follower=follower,following=following).exists(),
+        "followers": Follow.objects.filter(following=following).count()
+        }
+    return JsonResponse(data)
 
 def like(request, postId):
     # Like or unlike a post
