@@ -16,7 +16,7 @@ html{
 body{
   background-color: var(--background-color-lite);
   color: var(--text-color);
-  overflow-x: scroll;
+  
   height: 100%;
 }
 
@@ -31,6 +31,9 @@ body{
   z-index: -10;
 }
 
+.form-field{
+  height: 25px;
+}
 /*scroll bar*/
 
 ::-webkit-scrollbar{
@@ -129,7 +132,9 @@ a{
   flex-direction: column;
 }
 .feed-container{
-  height: 100%;
+  overflow-x: none;
+  height: auto;
+  padding-bottom: 55px;
 }
 .feeds-heading{
   position: fixed;
@@ -146,7 +151,7 @@ a{
   z-index: 1;
 }
 
-.post-container, .login-form, .register-form, .user-details{
+.post-container, .login-form, .register-form, .user-details, .spacer-div{
   position: relative;
   width: 98%;
   height: auto;
@@ -178,15 +183,23 @@ a{
   justify-content: space-between;
 }
 .post-header{
-  top: 0;
+  margin-top: 5px;
   height: 2em;
+  align-items: center;
 }
 .post-footer, .edit-footer{
   bottom: 0;
   height: 2em;
 }
+.post-footer{
+  justify-content: center;
+  align-items: center;
+}
+.buttons{
+  margin: 0 2px 7px 2px;
+}
 .post-body{
-  top: 10%;
+  margin-top: 5px;
   width: 96%;
   min-height: 7em;
   max-height: auto;
@@ -200,13 +213,21 @@ a{
   opacity: 1;
 }
 textarea{
+  top: 10%;
+  width: 96%;
+  height: 45%;
   display: none;
+  text-align: center;
+  background-color: var(--background-color-lite);
+  border: 0;
+  color: var(--text-color);
+  border-bottom: var(--border-color);
   z-index: 1;
 }
 
 .post-footer, .edit-footer{
   position: absolute;
-  width: 35%;
+  width: 25%;
   bottom: 0
 }
 .edit-footer{
@@ -224,8 +245,8 @@ textarea{
 }
 .poster-img{
   position: relative;
-  height: 43px;
-  width: 43px;
+  height: 40px;
+  width: 40px;
   margin: 2px;
   border-radius: 50%;
   background-color: gray;
@@ -239,7 +260,7 @@ textarea{
   justify-content: center;  
 }
 
-.likes, .comment, .share, .edit, .edit-buttons{
+.likes, .edit, .edit-buttons{
   height: 30px;
   width: 60px;
   display: flex;
@@ -352,7 +373,9 @@ textarea{
   border: var(--border-color);
   box-shadow: var(--box-shadow);
 }
-
+textarea{
+  text-align: left;
+}
 .btn-primary{
   width: 50%;
   height: 45px;
@@ -377,7 +400,7 @@ textarea{
   flex-direction: row;
   background-color: var(--background-color);
   box-shadow: var(--box-shadow);
-  z-index: 1;
+
 }
 
 
@@ -432,18 +455,21 @@ textarea{
   align-items: center;
   flex-direction: column;
   display: none;
+  position: fixed;
+  left: 27%;
 }
 
 .post-text{
   width: 98%;
-  height: 60px;
+  height: 70%;
 }
 .post-actions, .pagination-control-container{
-  width: 95%;
+  width: 98%;
   height: 60px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  justify-self: center;
 }
 .post-action{
   width: 75px;
@@ -482,4 +508,8 @@ textarea{
   background-color: var(--background-color-lite);
   box-shadow:  0 -5px 8px -1px rgba(87, 87, 86, 0.4);
   z-index: 1;
+}
+.spacer-div{
+  height: 80px;
+  background-color: var(--brand-color);
 }

@@ -1,24 +1,23 @@
 document.addEventListener('DOMContentLoaded', function(){
+    const overlayDiv = document.querySelector(".overlay")
 
   //Open post text editor
   document.querySelector('#write-post').addEventListener('click', (event)=>{
     event.preventDefault();
-    document.querySelector('.new-post-container').style.display = 'block';
-    document.querySelector('.feed-container').style.paddingTop = '200px';
+    newPostDiv = document.querySelector('.new-post-container')
+    newPostDiv.style.display = 'block';
+    newPostDiv.style.zIndex = 11
+    overlayDiv.style.zIndex = 10
+    //document.querySelector('.feed-container').style.paddingTop = '200px';
+    
   })
 
   //cancel post
   document.querySelector('.post-action').addEventListener('click', ()=>{
     document.querySelector('.new-post-container').style.display = 'none';
     document.querySelector('.post-text').value ='';
+    overlayDiv.style.zIndex = -10
   })
-
-  //Save Post
-  /*
-  document.querySelector('#save-post').addEventListener('click', ()=>{
-    document.querySelector('.new-post-container').style.display = 'none';
-    document.querySelector('.post-text').value ='';
-  })*/
 
  // Fetch likes
 
@@ -28,9 +27,9 @@ document.addEventListener('DOMContentLoaded', function(){
       let postId = button.getAttribute("data-id")
       fetch(`/likes/${postId}`,{
             metho: "POST",
-          headers:{'Accept': 'application/json',
+            headers:{'Accept': 'application/json',
               'X-Requested-With': 'XMLHttpRequest',
-          },
+            },
       })
       .then(response=>{return response.json()})
       .then(data=>{
@@ -74,7 +73,6 @@ document.addEventListener('DOMContentLoaded', function(){
   /********Edit function*********/
 
   const editButton = document.querySelectorAll('.edit')
-  const overlayDiv = document.querySelector(".overlay")
 
   editButton.forEach(button=>{button.addEventListener('click', ()=>{
       postId = button.getAttribute("data-id")
@@ -172,6 +170,7 @@ document.addEventListener('DOMContentLoaded', function(){
         
     })
   })
-  
+
+
 })
 

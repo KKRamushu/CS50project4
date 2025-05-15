@@ -7,7 +7,7 @@
 <div class="feed-container">
     {% if profile %}
       <div class="feeds-heading">
-        <h3 class="feeds-title login-title">Profile</h3>
+        <h3 class="feeds-title login-title">{{posterName}}'s Profile</h3>
       </div>
       <div class="user-info">
         <div class="personal">
@@ -36,7 +36,7 @@
     {% endif %}
     <form action="{% url 'post' %}" method="post" class="new-post-container">
         {% csrf_token %}
-        <input type="text" name="post-content" id="" class="post-text form-control">
+        <input type="text" name="post-content" id="" required class="post-text form-control">
         <div class="post-actions">
             <input type="button" value="cancel" id="cancel-post" class="post-action btn-primary action">
             <input type="submit" value="Post" id="save-post" class="post-action btn-primary action">
@@ -54,17 +54,15 @@
 
             <div class="post-body">
                 <p class="post-content" id="content-{{post.id}}">{{post.content}}</p>
-                <textarea name="edit-text" id="edit-{{post.id}}"></textarea>
+                <textarea name="edit-text" autofocus id="edit-{{post.id}}"></textarea>
             </div>
             {% if user.is_authenticated %}
             <div class="edit-footer" id="edit-footer-{{post.id}}">
-                <button class=" edit-buttons cancel-edit" id="cancel-{{post.id}}">cancel</button>
-                <button class=" edit-buttons save-changes" id="save-{{post.id}}">save</button>
+                <button class=" edit-buttons buttons cancel-edit" id="cancel-{{post.id}}">cancel</button>
+                <button class=" edit-buttons buttons save-changes" id="save-{{post.id}}">save</button>
             </div>
             <div class="post-footer" id="post-footer-{{post.id}}">
                 <div class="likes buttons like-button" data-id="{{post.id}}">like</div>
-                <div class="comment buttons">comment</div>
-                <div class="share buttons">share</div>
                 {% if post.poster == user %}
                 <div class="edit buttons" data-id="{{post.id}}">edit</div>
                 {% endif %}
@@ -72,8 +70,9 @@
 
             {% endif %}
         </div>
+        
     {% endfor %}
-    
+
     {% if allPosts.paginator.num_pages > 1 %}
     <div class="pagination-control-container"> 
       {% if allPosts.has_previous %} <a class="paginator-control  paginator-nxt" href="?page={{allPosts.previous_page_number}}">prev</a> {% endif %}
@@ -82,8 +81,7 @@
 
     </div>
     {% endif %}
-
-    <div class="bottom-bar"></div>
+ 
 </div>
-
+<div class="bottom-bar"></div>
 {% endblock %}

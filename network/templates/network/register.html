@@ -13,16 +13,16 @@
         <form action="{% url 'register' %}" method="post" class="register-form">
             {% csrf_token %}
             <div class="form-group post-header">
-                <input class="form-control" autofocus type="text" name="username" placeholder="Username">
+                <input class="form-control form-field" required autofocus type="text" name="username" placeholder="Username">
             </div>
             <div class="form-group post-header">
-                <input class="form-control" type="email" name="email" placeholder="Email Address">
+                <input class="form-control form-field" required type="email" name="email" placeholder="Email Address">
             </div>
             <div class="form-group post-header">
-                <input class="form-control" type="password" name="password" placeholder="Password">
+                <input class="form-control form-field" required type="password" name="password" placeholder="Password">
             </div>
             <div class="form-group post-header">
-                <input class="form-control" type="password" name="confirmation" placeholder="Confirm Password">
+                <input class="form-control form-field" required type="password" name="confirmation" placeholder="Confirm Password">
             </div>
             <input class="btn btn-primary action" type="submit" value="Register">
         </form>

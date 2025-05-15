@@ -17,7 +17,7 @@ def index(request):
 
     allPosts = Post.objects.all().order_by('-timestamp')
     page = request.GET.get('page')
-    sortedPosts = Paginator(allPosts, 5).get_page(page)
+    sortedPosts = Paginator(allPosts, 10).get_page(page)
     return render(request, "network/index.html",{"allPosts":sortedPosts, "profile": False})
 
 def followingPosts(request):
@@ -190,6 +190,6 @@ def edited(request, postId):
     post.content = data["contents"]
     post.timestamp = timezone.now()
     post.save()
-    newPost = {"timeStamp": post.timestamp,
+    newPost = {"timeStamp": post.timestamp.strftime("%Y-%m-%d %H:%M"),
             "content": post.content}
     return JsonResponse(newPost, safe=False)
