@@ -9,7 +9,7 @@ import json
 from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator
 
-from .models import User, Post, Like, Follow
+from .models import User, Post, Like, Follow, User_Profile
 
 
 def index(request):
@@ -98,6 +98,15 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "network/register.html")
+    
+def upload_user_pic(request):
+    # Get profile picture from user and save it to user's profile
+
+    if request.method == "POST":
+        profile = request.user.user_profile
+        profile.image = request.FILES.get('image')
+        profile.save()
+        return HttpResponseRedirect(viewProfile(request.user.id))
 
 def post(request):
     # Make new posting

@@ -11,7 +11,10 @@
       </div>
       <div class="user-info">
         <div class="personal">
-          <div class="user-img "></div>
+          <div class="user-img ">
+            <img src="" alt="" class="user-img">
+            <button type="button" class="edit-profile-pic">edit</button>
+          </div>
           <div class="user-name"><strong>{{ posterName }}</strong></div>   
         </div>
     
@@ -46,7 +49,9 @@
         <div class="post-container">
             <div class="post-header">
                 <a href="{% url 'profile' posterId=post.poster.id %}" class="poster-container">
-                    <div class="poster-img"></div>
+                    <div class="poster-img">
+                      <img src="" alt="">
+                    </div>
                     <div class="poster-name"><h5>{{post.poster}}</h5></div>
                 </a>
                 <div class="post-time"><small id="timestamp-{{post.id}}">{{post.timestamp|date:"Y-m-d H:i"}}</small></div>

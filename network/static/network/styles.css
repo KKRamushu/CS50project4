@@ -447,6 +447,10 @@ textarea{
   color: var(--text-color);
 }
 
+.edit-profile-pic{
+  z-index: 10;
+}
+
 /*post*/
 .new-post-container{
   height: 250px;

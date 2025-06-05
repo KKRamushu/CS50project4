@@ -171,6 +171,10 @@ document.addEventListener('DOMContentLoaded', function(){
     })
   })
 
+  const editProfileButton = document.querySelector('.edit-profile-pic')
+  editProfileButton.addEventListener('click', ()=>{
+    alert("profile")
+  });
 
 })
 
