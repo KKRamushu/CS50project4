@@ -98,7 +98,8 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "network/register.html")
-    
+
+@csrf_exempt   
 def upload_user_pic(request):
     # Get profile picture from user and save it to user's profile
 

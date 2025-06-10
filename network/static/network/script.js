@@ -153,26 +153,51 @@ document.addEventListener('DOMContentLoaded', function(){
 
   const followButton = document.querySelector(".follow")
   const followersDiv = document.querySelector(".followers")
-  followButton.addEventListener('click',()=>{
-    userId = followButton.getAttribute("data-id")
-    fetch(`/follow/`,{
-        method: "POST",
-        headers:{'Accept': 'application/json',
-            'X-Requested-With': 'XMLHttpRequest',
-        },
-        body: JSON.stringify({"userId": userId}),
-    })
-    .then(response => {return response.json()})
-    .then(data =>{
+  if (followButton){
+    followButton.addEventListener('click',()=>{
+        userId = followButton.getAttribute("data-id")
+        fetch(`/follow/`,{
+            method: "POST",
+            headers:{'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
+            },
+            body: JSON.stringify({"userId": userId}),
+        })
+        .then(response => {return response.json()})
+        .then(data =>{
 
-        data.isFollowing? followButton.value = "Unfollow":followButton.value = "Follow"
-        followersDiv.innerHTML= `${data.followers} Followers`
-        
+            data.isFollowing? followButton.value = "Unfollow":followButton.value = "Follow"
+            followersDiv.innerHTML= `${data.followers} Followers`
+            
+        })
     })
-  })
+  }
 
   const editProfileButton = document.querySelector('.edit-profile-pic')
   editProfileButton.addEventListener('click', ()=>{
+    const accountDiv = document.querySelector('.acc-details')
+
+    const picUploadForm = document.createElement('form')
+    picUploadForm.method = "POST"
+    picUploadForm.enctype = "multipart/form-data"
+    picUploadForm.action = "{% url 'upload_pic' %}"
+
+    const csrfInput = document.createElement("input")
+    csrfInput.type = "hidden"
+    csrfInput.name = "csrfmiddlewaretoken"
+    csrfInput.value = document.querySelector('input[name="csrfmiddlewaretoken"]').value
+
+    const fileInput = document.createElement("input")
+    fileInput.type = "file"
+    fileInput.name = "image"
+    fileInput.accept = "image/*"
+
+    const uploadButton = document.createElement("input")
+    uploadButton.value = "Upload"
+    uploadButton.type = "submit"
+
+    picUploadForm.append(csrfInput,fileInput,uploadButton)
+    accountDiv.appendChild(picUploadForm)
     alert("profile")
   });
 

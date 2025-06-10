@@ -15,5 +15,6 @@ urlpatterns = [
     path("like/<int:postId>", views.like, name="like"),
     path("likes/<int:postId>", views.likes, name="likes"),
     path("edit/<int:postId>", views.edit, name="edit"),
-    path("edited/<int:postId>", views.edited, name="edited")
+    path("edited/<int:postId>", views.edited, name="edited"),
+    path("upload", views.upload_user_pic, name="upload_pic")
 ]
