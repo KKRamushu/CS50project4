@@ -107,7 +107,7 @@ def upload_user_pic(request):
         profile = request.user.user_profile
         profile.image = request.FILES.get('image')
         profile.save()
-        return HttpResponseRedirect(viewProfile(request.user.id))
+        return HttpResponseRedirect(viewProfile(request,1))
 
 def post(request):
     # Make new posting
