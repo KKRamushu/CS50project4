@@ -55,7 +55,7 @@
                 <a href="{% url 'profile' posterId=post.poster.id %}" class="poster-container">
                     <div class="poster-img">
                       {% if user_profile %}
-                      <img src="{{user_profile.image.url}}" alt=" no image" class="poster-img">
+                      <img src="{{post.poster.user_profile.image.url}}" alt=" no image" class="poster-img">
                       {% else %}
                       <img src="" alt="" class="poster-img">
                       {% endif %}

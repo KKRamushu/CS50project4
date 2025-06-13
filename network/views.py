@@ -16,10 +16,11 @@ def index(request):
     # Gets all postings and present them in groups of 10 per page
 
     allPosts = Post.objects.all().order_by('-timestamp')
-
+    user_profile = User_Profile.objects.all
     page = request.GET.get('page')
     sortedPosts = Paginator(allPosts, 10).get_page(page)
-    return render(request, "network/index.html",{"allPosts":sortedPosts, "profile": False})
+    return render(request, "network/index.html",{"allPosts":sortedPosts, "profile": False,
+                                                 "user_profile":user_profile})
 
 def followingPosts(request):
     # Get posts from users that are followed by current user
