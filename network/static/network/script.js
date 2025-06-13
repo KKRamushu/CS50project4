@@ -176,11 +176,12 @@ document.addEventListener('DOMContentLoaded', function(){
   const editProfileButton = document.querySelector('.edit-profile-pic')
   editProfileButton.addEventListener('click', ()=>{
     const accountDiv = document.querySelector('.acc-details')
+    const uploadUrl = editProfileButton.dataset.uploadUrl
 
     const picUploadForm = document.createElement('form')
     picUploadForm.method = "POST"
     picUploadForm.enctype = "multipart/form-data"
-    picUploadForm.action = "{% url 'upload_pic' %}"
+    picUploadForm.action = uploadUrl
 
     const csrfInput = document.createElement("input")
     csrfInput.type = "hidden"
@@ -198,7 +199,6 @@ document.addEventListener('DOMContentLoaded', function(){
 
     picUploadForm.append(csrfInput,fileInput,uploadButton)
     accountDiv.appendChild(picUploadForm)
-    alert("profile")
   });
 
 })

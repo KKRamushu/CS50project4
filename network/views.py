@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse
 from datetime import datetime
 from django.utils import timezone
@@ -16,6 +16,7 @@ def index(request):
     # Gets all postings and present them in groups of 10 per page
 
     allPosts = Post.objects.all().order_by('-timestamp')
+
     page = request.GET.get('page')
     sortedPosts = Paginator(allPosts, 10).get_page(page)
     return render(request, "network/index.html",{"allPosts":sortedPosts, "profile": False})
@@ -37,6 +38,10 @@ def viewProfile(request,posterId):
     followers = Follow.objects.filter(following=posterId).count()
     following = Follow.objects.filter(follower=posterId).count()
     posterName = User.objects.get(id=posterId)
+    try:
+        profile = User_Profile.objects.get(user = posterId)
+    except User_Profile.DoesNotExist:
+        profile = False
     if (request.user.is_authenticated):
         isFollowing = Follow.objects.filter(follower=request.user, following=posterName).exists()
     else:
@@ -45,7 +50,7 @@ def viewProfile(request,posterId):
     sortedPosts = Paginator(allPosts, 10).get_page(page)
     
     return render(request, "network/index.html",{"profile": True, "allPosts":sortedPosts, "followers": followers,
-                                                    "following": following,
+                                                    "following": following,"user_profile":profile,
                                                    "posterName":posterName, "isFollowing": isFollowing })
 
 def login_view(request):
@@ -104,10 +109,17 @@ def upload_user_pic(request):
     # Get profile picture from user and save it to user's profile
 
     if request.method == "POST":
-        profile = request.user.user_profile
-        profile.image = request.FILES.get('image')
-        profile.save()
-        return HttpResponseRedirect(viewProfile(request,1))
+        try:
+            profile = User_Profile.objects.get(user=request.user)
+            profile.image = request.FILES.get('image')
+            profile.save()
+        except User_Profile.DoesNotExist:
+            new_profile = User_Profile(
+                user = request.user,
+                image = request.FILES.get('image')
+            )
+            new_profile.save()
+        return redirect("profile" ,posterId=request.user.id)
 
 def post(request):
     # Make new posting

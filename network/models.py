@@ -12,7 +12,7 @@ def user_directory(instance, filename):
 class User_Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     image = models.ImageField(upload_to=user_directory, default='default.jpeg')
-    def __self__(self):
+    def __str__(self):
         return f"{self.user.username}'s Profile"
 
 class Post(models.Model):
