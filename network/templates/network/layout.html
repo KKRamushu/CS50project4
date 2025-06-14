@@ -35,7 +35,7 @@
                 {% if user.is_authenticated %}
                     <div class="user-img-name-container">
                         <div class="user-img">
-                            <img src="{{user.profile.image.url}}" alt="">
+                            <img class="user-img" src="{{user.user_profile.image.url}}" alt="">
                         </div>
                             <div class="user-name"><strong>{{ user.username }}</strong></div>   
                     </div>

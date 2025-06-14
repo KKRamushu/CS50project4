@@ -332,7 +332,7 @@ textarea{
 }
 
 .user-img{
-  position: relative;
+  position: sticky;
   width: 200px;
   height: 200px;
   border-radius: 50%;
@@ -403,6 +403,11 @@ textarea{
 
 }
 
+.profile-image{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 
 .personal, .acc-details{
@@ -446,9 +451,16 @@ textarea{
 .unfollow:hover{
   color: var(--text-color);
 }
-
+.image{
+  position: absolute;
+}
 .edit-profile-pic{
-  z-index: 10;
+  position: absolute;
+  left: -20px;
+  z-index: 100;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
 }
 
 /*post*/

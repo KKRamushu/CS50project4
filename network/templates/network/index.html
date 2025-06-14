@@ -11,13 +11,15 @@
       </div>
       <div class="user-info">
         <div class="personal">
-          <div class="user-img ">
+          <div class="user-img profile-image ">
             {% if user_profile %}
-            <img src="{{user_profile.image.url}}" alt=" no image" class="user-img">
+            <img src="{{user_profile.image.url}}" alt=" no image" class="user-img image">
             {% else %}
             <img src="" alt="" class="user-img">
             {% endif %}
+            {%if user_profile.user == user%}
             <button type="button" data-upload-url="{% url 'upload_pic' %}" class="edit-profile-pic">edit</button>
+            {%endif%}
           </div>
           <div class="user-name"><strong>{{ posterName }}</strong></div>   
         </div>
