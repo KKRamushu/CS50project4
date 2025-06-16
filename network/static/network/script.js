@@ -175,13 +175,14 @@ document.addEventListener('DOMContentLoaded', function(){
 
   const editProfileButton = document.querySelector('.edit-profile-pic')
   editProfileButton.addEventListener('click', ()=>{
-    const accountDiv = document.querySelector('.acc-details')
+    const accountDiv = document.querySelector('.profile-image')
     const uploadUrl = editProfileButton.dataset.uploadUrl
 
     const picUploadForm = document.createElement('form')
     picUploadForm.method = "POST"
     picUploadForm.enctype = "multipart/form-data"
     picUploadForm.action = uploadUrl
+    picUploadForm.classList.add("pic-upload-form")
 
     const csrfInput = document.createElement("input")
     csrfInput.type = "hidden"
@@ -191,14 +192,33 @@ document.addEventListener('DOMContentLoaded', function(){
     const fileInput = document.createElement("input")
     fileInput.type = "file"
     fileInput.name = "image"
+    fileInput.id = "file-input"
     fileInput.accept = "image/*"
+    fileInput.required =true
+    fileInput.classList.add("choose-file")
+
+    const cancelUploadButton = document.createElement("input")
+    cancelUploadButton.type = "button"
+    cancelUploadButton.value = "Cancel"
+    cancelUploadButton.classList.add("cancel-pic-upload")
 
     const uploadButton = document.createElement("input")
     uploadButton.value = "Upload"
     uploadButton.type = "submit"
+    uploadButton.classList.add("pic-upload-button")
 
-    picUploadForm.append(csrfInput,fileInput,uploadButton)
+    picUploadForm.append(csrfInput, cancelUploadButton, fileInput ,uploadButton)
     accountDiv.appendChild(picUploadForm)
+
+    overlayDiv.style.zIndex = 10
+    overlayDiv.style.opacity = 0.05
+    accountDiv.style.zIndex = 11
+
+    cancelUploadButton.addEventListener("click", ()=>{
+       overlayDiv.style.zIndex = -10 
+       overlayDiv.style.opacity = 0.0
+       accountDiv.removeChild(picUploadForm)
+    })
   });
 
 })

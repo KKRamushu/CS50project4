@@ -407,6 +407,8 @@ textarea{
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: visible;
+  z-index: 2;
 }
 
 
@@ -418,6 +420,7 @@ textarea{
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  
 }
 
 .followers-div, .following-div, .follow-form, .follow, .unfollow{
@@ -430,6 +433,7 @@ textarea{
   border-radius: 10px;
   margin-top: 5px;
   border: var(--text-color);
+  z-index: 0;
 }
 
 .follow-form{
@@ -437,16 +441,18 @@ textarea{
 }
 
 .follow{
+  font-weight: bold;
+  font-size: 16px;
   width: 95%;
-  background-color: var(--background-color-lite);
-  color: var(--brand-color);
+  background-color: var(--brand-color);
+  color: var(--text-color);
 }
 .follow:hover{
   color: var(--text-color);
 }
 .unfollow{
   width: 95%;
-  background-color: var(--brand-color);
+  background-color: var(--background-color-lite);
 }
 .unfollow:hover{
   color: var(--text-color);
@@ -456,11 +462,54 @@ textarea{
 }
 .edit-profile-pic{
   position: absolute;
-  left: -20px;
+  left: 10px;
+  top: 5px;
   z-index: 100;
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
+}
+
+.pic-upload-form{
+  position: absolute;
+  left: 10px;
+  top: 5px;
+  height: 50px;
+  min-width: 361px;
+  z-index: 9999;
+  display: inline;
+
+  border-radius: 30px;
+  background-color: rgb(53, 53, 53);
+
+  box-shadow: var(--box-shadow);
+}
+
+.cancel-pic-upload{
+  height: 50px;
+  border: 0;
+  border-radius: 30px 5px 5px 30px;
+}
+
+.pic-upload-button{
+  height: 50px;
+  border: 0;
+  border-radius: 5px 30px 30px 5px;
+  z-index: 1000;
+}
+
+.choose-file{
+  border: 0;
+  background-color: var(--background-color-lite);
+}
+
+.choose-file:hover,
+.pic-upload-button:hover,
+.cancel-pic-upload:hover,
+.edit-profile-pic:hover{
+  border-bottom:  2px solid rgb(201, 201, 201);
+  box-shadow: var(--box-shadow-hover);
+  background-color: var(--brand-color); 
 }
 
 /*post*/
