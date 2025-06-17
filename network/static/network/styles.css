@@ -30,6 +30,7 @@ body{
   opacity: 0;
   z-index: -10;
 }
+a{text-decoration: none;}
 
 .form-field{
   height: 25px;
@@ -242,6 +243,10 @@ textarea{
   height: inherit;
   display: flex;
   flex-direction: row;
+  text-decoration: none;
+}
+.poster-img-container{
+  padding-top: 5px;
 }
 .poster-img{
   position: relative;
@@ -450,13 +455,7 @@ textarea{
 .follow:hover{
   color: var(--text-color);
 }
-.unfollow{
-  width: 95%;
-  background-color: var(--background-color-lite);
-}
-.unfollow:hover{
-  color: var(--text-color);
-}
+
 .image{
   position: absolute;
 }

@@ -17,7 +17,7 @@
             {% else %}
             <img src="" alt="" class="user-img">
             {% endif %}
-            {%if user_profile.user == user%}
+            {%if posterName == user%}
             <button type="button" data-upload-url="{% url 'upload_pic' %}" class="edit-profile-pic">edit</button>
             {%endif%}
           </div>
@@ -55,7 +55,7 @@
         <div class="post-container">
             <div class="post-header">
                 <a href="{% url 'profile' posterId=post.poster.id %}" class="poster-container">
-                    <div class="poster-img">
+                    <div class="poster-img-container">
                       {% if post.poster.user_profile.image %}
                       <img src="{{post.poster.user_profile.image.url}}" alt=" no image" class="poster-img">
                       {% else %}

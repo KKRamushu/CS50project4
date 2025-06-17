@@ -28,7 +28,7 @@ def followingPosts(request):
     following = Follow.objects.filter(follower=request.user).values_list('following', flat=True)  
     followingPosts = Post.objects.filter(poster__in=following).order_by('-timestamp')
     page = request.GET.get('page')
-    sortedPosts = Paginator(followingPosts,2).get_page(page)
+    sortedPosts = Paginator(followingPosts,10).get_page(page)
     return render(request, "network/index.html",{"allPosts":sortedPosts,"profile": False})
 
 # 
