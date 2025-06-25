@@ -7,6 +7,7 @@ from datetime import datetime
 from django.utils import timezone
 import json
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 
 from .models import User, Post, Like, Follow, User_Profile
@@ -16,12 +17,16 @@ def index(request):
     # Gets all postings and present them in groups of 10 per page
 
     allPosts = Post.objects.all().order_by('-timestamp')
-    user_profile = User_Profile.objects.all
+    user_profile = User_Profile.objects.all()
     page = request.GET.get('page')
     sortedPosts = Paginator(allPosts, 10).get_page(page)
+    if request.user.is_authenticated:
+        is_following = set(Follow.objects.filter(follower=request.user).values_list('following_id', flat=True))
+    else:
+        is_following = False
     return render(request, "network/index.html",{"allPosts":sortedPosts, "profile": False,
-                                                 "user_profile":user_profile})
-
+                                                 "user_profile":user_profile, "is_following": is_following})
+@login_required
 def followingPosts(request):
     # Get posts from users that are followed by current user
 
@@ -31,10 +36,12 @@ def followingPosts(request):
     sortedPosts = Paginator(followingPosts,10).get_page(page)
     return render(request, "network/index.html",{"allPosts":sortedPosts,"profile": False})
 
-# 
+
 def viewProfile(request,posterId):
     # View user posts, followings, and followers
-
+    if not request.user.is_authenticated:
+        return redirect("login")
+    
     allPosts = Post.objects.filter(poster=posterId).order_by('-timestamp')
     followers = Follow.objects.filter(following=posterId).count()
     following = Follow.objects.filter(follower=posterId).count()
@@ -47,12 +54,19 @@ def viewProfile(request,posterId):
         isFollowing = Follow.objects.filter(follower=request.user, following=posterName).exists()
     else:
         isFollowing = False
+
+    if request.user.is_authenticated:
+        is_following = set(Follow.objects.filter(follower=request.user).values_list('following_id', flat=True))
+    else:
+        is_following = False
+        
     page = request.GET.get('page')
     sortedPosts = Paginator(allPosts, 10).get_page(page)
     
     return render(request, "network/index.html",{"profile": True, "allPosts":sortedPosts, "followers": followers,
                                                     "following": following,"user_profile":profile,
-                                                   "posterName":posterName, "isFollowing": isFollowing })
+                                                   "posterName":posterName, "isFollowing": isFollowing,
+                                                    "is_following": is_following })
 
 def login_view(request):
     if request.method == "POST":
@@ -105,6 +119,7 @@ def register(request):
     else:
         return render(request, "network/register.html")
 
+@login_required
 @csrf_exempt   
 def upload_user_pic(request):
     # Get profile picture from user and save it to user's profile
@@ -122,6 +137,7 @@ def upload_user_pic(request):
             new_profile.save()
         return redirect("profile" ,posterId=request.user.id)
 
+@login_required
 def post(request):
     # Make new posting
 
@@ -138,7 +154,7 @@ def post(request):
 
         newPost.save()
         return HttpResponseRedirect(reverse("index"))
-
+@login_required
 @csrf_exempt
 def follow(request):
     # Follow or unfollow a user
@@ -163,7 +179,7 @@ def follow(request):
         "followers": Follow.objects.filter(following=following).count()
         }
     return JsonResponse(data)
-
+@login_required
 def like(request, postId):
     # Like or unlike a post
 
@@ -201,7 +217,7 @@ def edit(request,postId):
             "poster": post.poster.username,
             "content": post.content}
     return JsonResponse(data, safe=False)
-
+@login_required
 @csrf_exempt
 def edited(request, postId):
     # Save edited post

@@ -63,6 +63,9 @@
                       {% endif %}
                     </div>
                     <div class="poster-name"><h5>{{post.poster}}</h5></div>
+                    {%if user.is_authenticated and user != post.poster%}
+                    <input type="button" class="follow-link" value="{%if post.poster.id in is_following%} FOLLOWING {%else%} FOLLOW {%endif%}">
+                    {%endif%}
                 </a>
                 <div class="post-time"><small id="timestamp-{{post.id}}">{{post.timestamp|date:"Y-m-d H:i"}}</small></div>
             </div>

@@ -280,6 +280,14 @@ textarea{
   color: white;
   background-color: var(--background-color);
 }
+
+.follow-link{
+  box-shadow: var(--box-shadow);
+  background-color: var(--background-color-selected);
+  border-radius: 10px;
+  color: var(--brand-color);
+  margin-left: 5px;
+}
 .buttons:hover{
   border-bottom:  2px solid rgb(221, 107, 0);
   box-shadow: var(--box-shadow-hover);
