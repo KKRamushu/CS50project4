@@ -16,5 +16,7 @@ a simple django based social network with login/logout, post, like, and followin
 
   ## Setup
 1. Clone repo
-2. Run `python manage.py runserver`
-3. Access via `localhost:8000`
+2. Run `python manage.py makemigrations`
+3. Run `python manage.py migrate`
+4. Run `python manage.py runserver`
+5. Access via `localhost:8000`
